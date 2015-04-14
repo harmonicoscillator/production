@@ -209,11 +209,19 @@ process.load('HeavyIonsAnalysis.EventAnalysis.hltanalysis_cff')
 # uncomment the snippet at the end of the configuration.
 #############################################################
 # Minimum bias trigger selection (later runs)
-process.load("HLTrigger.HLTfilters.hltHighLevel_cfi")
-process.skimFilter = process.hltHighLevel.clone()
-process.skimFilter.HLTPaths = ["HLT_PAPhoton30_NoCaloIdVL_v1","HLT_PAPhoton40_NoCaloIdVL_v1"]
+#process.load("HLTrigger.HLTfilters.hltHighLevel_cfi")
+#process.skimFilter = process.hltHighLevel.clone()
+#process.skimFilter.HLTPaths = ["HLT_PAPhoton30_NoCaloIdVL_v1","HLT_PAPhoton40_NoCaloIdVL_v1"]
 
-process.superFilterSequence = cms.Sequence(process.skimFilter)
+process.singlePhotonPtFilter = cms.EDFilter("PhotonSelector",
+                                            src = cms.InputTag("photons"),
+                                            cut = cms.string('pt > 18 && abs(eta) < 1.48 && sigmaIetaIeta > 0.002 && hadronicOverEm < 0.2' ),
+                                            filter = cms.bool(True)
+                                            )
+
+
+#process.superFilterSequence = cms.Sequence(process.skimFilter*process.singlePhotonPtFilter)
+process.superFilterSequence = cms.Sequence(process.singlePhotonPtFilter)
 process.superFilterPath = cms.Path(process.superFilterSequence)
 process.skimanalysis.superFilters = cms.vstring("superFilterPath")
 ################################################################
