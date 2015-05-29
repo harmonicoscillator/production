@@ -338,4 +338,4 @@ process.pAna = cms.EndPath(process.skimanalysis)
 
 #Filtering
 for path in process.paths:
-   getattr(process,path)._seq = process.superFilterSequence*getattr(process,path)._seq
+    getattr(process,path)._seq = process.superFilterSequence*getattr(process,path)._seq
