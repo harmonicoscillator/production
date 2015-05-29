@@ -37,7 +37,7 @@ process.source = cms.Source("PoolSource",
 
 # Number of events we want to process, -1 = all events
 process.maxEvents = cms.untracked.PSet(
-    input = cms.untracked.int32(10))
+    input = cms.untracked.int32(100))
 
 
 #####################################################################################
@@ -189,6 +189,9 @@ process.hiGoodTracks.src = cms.InputTag("generalTracks")
 process.hiGoodTracks.vertices = cms.InputTag("offlinePrimaryVerticesWithBS")
 process.RandomNumberGeneratorService.multiPhotonAnalyzer = process.RandomNumberGeneratorService.generator.clone()
 
+# re-do island basic clusters which are not run for pp, pPb
+process.load("RecoEcal.EgammaClusterProducers.islandBasicClusters_cfi")
+
 #####################
 # muons
 ######################
@@ -208,25 +211,15 @@ process.load('HeavyIonsAnalysis.EventAnalysis.hltanalysis_cff')
 # HLT path you would like to filter on to 'HLTPaths' and also
 # uncomment the snippet at the end of the configuration.
 #############################################################
-# This is what was run most recently
-#process.load("HLTrigger.HLTfilters.hltHighLevel_cfi")
-#process.skimFilter = process.hltHighLevel.clone()
-#process.skimFilter.HLTPaths = ["HLT_PAPhoton30_NoCaloIdVL_v1","HLT_PAPhoton40_NoCaloIdVL_v1"]
-#process.superFilterSequence = cms.Sequence(process.skimFilter)
+# Minimum bias trigger selection (later runs)
+process.load("HLTrigger.HLTfilters.hltHighLevel_cfi")
+process.skimFilter = process.hltHighLevel.clone()
+process.skimFilter.HLTPaths = ["HLT_PAPhoton30_NoCaloIdVL_v1","HLT_PAPhoton40_NoCaloIdVL_v1"]
 
-# it might be best to run this instead of cutting on all photon triggers
-process.singlePhotonPtFilter = cms.EDFilter("PhotonSelector",
-                                            src = cms.InputTag("photons"),
-                                            cut = cms.string('pt > 18 && abs(eta) < 1.48 && sigmaIetaIeta > 0.002 && hadronicOverEm < 0.2' ),
-                                            filter = cms.bool(True)
-                                            )
-process.superFilterSequence = cms.Sequence(process.singlePhotonPtFilter)
-
+process.superFilterSequence = cms.Sequence(process.skimFilter)
 process.superFilterPath = cms.Path(process.superFilterSequence)
 process.skimanalysis.superFilters = cms.vstring("superFilterPath")
 ################################################################
-
-
 
 process.hltobject.triggerNames = cms.vstring("HLT_PAJet100_NoJetID_v1","HLT_PAJet80_NoJetID_v1","HLT_PAJet60_NoJetID_v1","HLT_PAJet40_NoJetID_v1","HLT_PAJet20_NoJetID_v1")
 
@@ -237,6 +230,7 @@ process.ana_step = cms.Path(process.hltanalysis +
                             process.hiEvtPlane +
                             process.hiEvtAnalyzer*
                             process.jetSequences +
+                            process.islandBasicClusters +
                             process.photonStep +
                             process.pfcandAnalyzer +
                             process.rechitAna +
