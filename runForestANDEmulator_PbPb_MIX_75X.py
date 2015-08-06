@@ -51,7 +51,7 @@ process.load('FWCore.MessageService.MessageLogger_cfi')
 # PbPb 53X MC
 
 from Configuration.AlCa.GlobalTag_condDBv2 import GlobalTag
-process.GlobalTag = GlobalTag(process.GlobalTag, 'MCHI2_75_V2', '')
+process.GlobalTag = GlobalTag(process.GlobalTag, '75X_mcRun2_HeavyIon_v1', '')
 
 process.GlobalTag.toGet.extend([
  cms.PSet(record = cms.string("HeavyIonRcd"),
@@ -163,6 +163,7 @@ process.quickTrackAssociatorByHits.ComponentName = cms.string('quickTrackAssocia
 
 process.load('HeavyIonsAnalysis.PhotonAnalysis.ggHiNtuplizer_cfi')
 process.ggHiNtuplizer.genParticleSrc = cms.InputTag("genParticles")
+process.ggHiNtuplizer.gsfElectronLabel   = cms.InputTag("gedGsfElectronsTmp")
 
 #####################
 # muons
@@ -219,22 +220,11 @@ if 'MessageLogger' in process.__dict__:
     process.MessageLogger.categories.append('HLTrigReport')
     process.MessageLogger.categories.append('FastReport')
 
-# # add specific customizations
-# _customInfo = {}
-# _customInfo['menuType'  ]= "GRun"
-# _customInfo['globalTags']= {}
-# _customInfo['globalTags'][True ] = "auto:run2_hlt_GRun"
-# _customInfo['globalTags'][False] = "auto:run2_mc_GRun"
-# _customInfo['inputFiles']={}
-# #_customInfo['inputFiles'][True]  = "file:RelVal_Raw_GRun_DATA.root"
-# #_customInfo['inputFiles'][False] = "file:RelVal_Raw_GRun_MC.root"
-# #_customInfo['maxEvents' ]=  100
-# _customInfo['globalTag' ]= "auto:run2_mc_HIon"
-# #_customInfo['inputFile' ]=  ['file:RelVal_Raw_GRun_MC.root']
-# _customInfo['realData'  ]=  False
-# from HLTrigger.Configuration.customizeHLTforALL import customizeHLTforAll
-# process = customizeHLTforAll(process,_customInfo)
-
+# add specific customizations
+from HLTrigger.Configuration.customizeHLTforMC import customizeHLTforMC
+process = customizeHLTforMC(process)
+from HLTrigger.Configuration.customizeHLTforCMSSW import customiseHLTforCMSSW
+process = customiseHLTforCMSSW(process)
 
 from L1Trigger.L1TCommon.customsPostLS1 import customiseSimL1EmulatorForPostLS1_HI
 process = customiseSimL1EmulatorForPostLS1_HI(process)
