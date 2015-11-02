@@ -48,6 +48,8 @@ process.caloStage1Params.jetSeedThreshold = cms.double(0)
 process.caloStage1Params.etSumEtThreshold        = cms.vdouble(0., 7.) #ET, HT
 ### Minimum Bias thresholds
 process.caloStage1Params.minimumBiasThresholds = cms.vint32(4,4,6,6)
+### Centrality LUT
+process.caloStage1Params.centralityLUTFile = cms.FileInPath("L1Trigger/L1TCalorimeter/data/centrality_extended_LUT_preRun.txt")
 
 process.simRctUpgradeFormatDigis.emTag = cms.InputTag("caloStage1Digis")
 process.simRctUpgradeFormatDigis.regionTag = cms.InputTag("caloStage1Digis")
@@ -70,6 +72,7 @@ process.EmulatorResults = cms.EDAnalyzer('l1t::L1UpgradeAnalyzer',
                                          InputLayer2TauCollection = cms.InputTag("simCaloStage1FinalDigis:rlxTaus"),
                                          InputLayer2IsoTauCollection = cms.InputTag("simCaloStage1FinalDigis:isoTaus"),
                                          InputLayer2CaloSpareCollection = cms.InputTag("simCaloStage1FinalDigis:HFRingSums"),
+                                         InputLayer2HFBitCountCollection = cms.InputTag("simCaloStage1FinalDigis:HFBitCounts"),
                                          InputLayer1Collection = cms.InputTag("None"),
                                          legacyRCTDigis = cms.InputTag("None")
 )
@@ -79,7 +82,8 @@ process.UnpackerResults = cms.EDAnalyzer('l1t::L1UpgradeAnalyzer',
                                          InputLayer2TauCollection = cms.InputTag("caloStage1Digis:rlxTaus"),
                                          InputLayer2IsoTauCollection = cms.InputTag("caloStage1Digis:isoTaus"),
                                          InputLayer2CaloSpareCollection = cms.InputTag("caloStage1Digis:HFRingSums"),
-                                         InputLayer1Collection = cms.InputTag("None"),
+                                         InputLayer2HFBitCountCollection = cms.InputTag("caloStage1Digis:HFBitCounts"),
+                                         InputLayer1Collection = cms.InputTag("simRctUpgradeFormatDigis"),
                                          legacyRCTDigis = cms.InputTag("caloStage1Digis")
 )
 
