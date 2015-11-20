@@ -29,7 +29,8 @@ process.HiForest.HiForestVersion = cms.untracked.string(version)
 process.source = cms.Source("PoolSource",
                             duplicateCheckMode = cms.untracked.string("noDuplicateCheck"),
                             fileNames = cms.untracked.vstring(
-    "/store/user/twang/MinBias_TuneCUETP8M1_5p02TeV-pythia8/MinBias_TuneCUETP8M1_5p02TeV_pythia8_pp502Fall15_MCRUN2_71_V1_v1_AOD_CMSSW_7_5_4_20151113/78e0f1f0cb22713d3582ee21ebad8b42/step3_RAW2DIGI_L1Reco_RECO_1003_1_PX2.root"
+    #"/store/user/twang/MinBias_TuneCUETP8M1_5p02TeV-pythia8/MinBias_TuneCUETP8M1_5p02TeV_pythia8_pp502Fall15_MCRUN2_71_V1_v1_AOD_CMSSW_7_5_4_20151113/78e0f1f0cb22713d3582ee21ebad8b42/step3_RAW2DIGI_L1Reco_RECO_1003_1_PX2.root"
+                                "/store/user/gsfs/Neutrinos5Mfor5TeVpp/pp5TeVPileupAOD__2015_11_18/151118_090128/0000/step3_RAW2DIGI_L1Reco_RECO_101.root"
     ))
 
 # Number of events we want to process, -1 = all events
