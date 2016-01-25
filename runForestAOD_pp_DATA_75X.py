@@ -217,7 +217,7 @@ process.pAna = cms.EndPath(process.skimanalysis)
 # Customization
 import HLTrigger.HLTfilters.hltHighLevel_cfi
 process.hltfilter = HLTrigger.HLTfilters.hltHighLevel_cfi.hltHighLevel.clone()
-process.hltfilter.HLTPaths = ["HLT_HISinglePhoton40_Eta1p5_v1","HLT_HISinglePhoton40_Eta2p1_v1","HLT_HISinglePhoton40_Eta3p1_v1", "HLT_HISinglePhoton50_Eta3p1_v1"]
+process.hltfilter.HLTPaths = ["HLT_HISinglePhoton40_Eta1p5_v1","HLT_HISinglePhoton40_Eta3p1_v1", "HLT_HISinglePhoton50_Eta3p1_v1"]
 process.superFilterPath = cms.Path(process.hltfilter)
 process.skimanalysis.superFilters = cms.vstring("superFilterPath")
 ##filter all path with the production filter sequence
