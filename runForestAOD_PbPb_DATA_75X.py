@@ -192,6 +192,7 @@ process.ggHiNtuplizerGED = process.ggHiNtuplizer.clone(recoPhotonSrc = cms.Input
                                                        recoPhotonHiIsolationMap = cms.InputTag('photonIsolationHIProducerGED')
 )
 
+
 ####################################################################################
 
 #####################
